@@ -1,37 +1,32 @@
-# Assistente IRPF com CrewAI
+# Assistente de apoio à análise do IRPF
 
-Projeto de TCC em Ciência da Computação na UFABC. A proposta é desenvolver gradualmente um protótipo complementar para organizar informações e apoiar a revisão de declarações de IRPF, usando CrewAI e três agentes especializados quando a interpretação exigir.
+Projeto de TCC em Ciência da Computação na UFABC. O objetivo é construir, por etapas, um protótipo que organize dúvidas e apoie a revisão de casos fictícios de IRPF, com regras fundamentadas em fontes oficiais.
 
-## Princípios de construção
+O programa será complementar e experimental. Não substitui os sistemas ou orientações da Receita Federal e não promete evitar malha fina nem aumentar restituição.
 
-- O estudante implementa cada etapa e compreende o código antes de avançar.
-- O Flow coordena o processo e executa validações determinísticas; agentes ficam com tarefas de interpretação.
-- Cada versão deve funcionar sozinha e acrescentar uma capacidade demonstrável.
-- Usar somente dados fictícios durante o desenvolvimento e a demonstração.
-- Registrar cada etapa no GitHub com commits claros; criar uma tag quando a versão estiver funcional.
-- Não publicar chaves, arquivos `.env`, dados reais de contribuintes ou documentos fiscais.
+## Como o projeto será construído
+
+O estudante escreve e executa cada parte para aprender. A assistência explica conceitos, revisa o código e intervém nos arquivos somente quando solicitada.
+
+- **Flow e Python:** controlam a sequência, o estado, validações objetivas e cálculos.
+- **Agente 1 — interpretação:** organiza dúvidas em linguagem natural e identifica o que precisa ser esclarecido.
+- **Agente 2 — fundamentação:** recupera fontes oficiais pelo RAG e explica quais regras podem se aplicar.
+- **Agente 3 — revisão:** verifica coerência entre dados, fontes e resultados e apresenta achados justificados.
 
 ## Plano de versões
 
-| Marco | Entrega |
+| Versão | Entrega funcional |
 |---|---|
-| Planejamento | Escopo, casos de uso, critérios de avaliação e ambiente definidos. |
-| `v0.1.0` | Projeto Flow criado pela CLI oficial do CrewAI, executável e explicado. |
-| `v0.2.0` | Agente de interpretação de dúvidas, chamado pelo Flow, com saída estruturada. |
-| `v0.3.0` | Agente de fundamentação com recuperação RAG de fontes tributárias oficiais e referências rastreáveis. |
-| `v0.4.0` | Validações e cálculos determinísticos em Python, aplicados a um escopo tributário delimitado. |
-| `v0.5.0` | Agente revisor que consolida dados, regras e resultados em um relatório justificado. |
-| `v0.6.0` | Interface simples para demonstração dos modos de consulta e análise prévia com dados fictícios. |
-| `v1.0.0` | Protótipo avaliado com casos de referência, resultados e limitações documentados. |
+| Planejamento | Escopo, casos de uso, arquitetura e critérios de avaliação definidos. |
+| `v0.1.0` | Flow básico executável, com entrada fictícia, estado e validação. |
+| `v0.2.0` | Agente 1 interpreta dúvidas e retorna dados e pendências estruturados. |
+| `v0.3.0` | Agente 2 consulta fontes oficiais por RAG e retorna referências. |
+| `v0.4.0` | Funções Python validam dados e fazem cálculos do escopo delimitado. |
+| `v0.5.0` | Agente 3 consolida evidências e gera um relatório de revisão. |
+| `v0.6.0` | Interface simples demonstra consulta e análise prévia com dados fictícios. |
+| `v0.7.0` | Casos de referência avaliam acertos, erros e limitações. |
+| `v1.0.0` | Protótipo e documentação consolidados para apresentação do TCC. |
 
-Cada marco será detalhado antes de sua implementação. Uma versão só recebe tag quando pode ser instalada, executada e demonstrada de forma independente. O cronograma em semanas será definido depois de estimar cada etapa junto com o estudante.
+Cada versão será uma evolução cumulativa, executável a partir de um clone limpo. Tags Git preservarão cada entrega; não serão mantidas cópias do código em pastas separadas para cada versão.
 
-## Como começar
-
-1. Leia [AGENTS.md](AGENTS.md) antes de contribuir com código.
-2. Consulte [docs/plano-de-construcao.md](docs/plano-de-construcao.md) para escopo, etapas, critérios e rotina de aprendizagem.
-3. Para cada etapa: entender o objetivo, escrever o código, executar, explicar o que ocorreu, registrar as mudanças e só então iniciar a próxima.
-
-## Limites do protótipo
-
-O sistema é experimental e não substitui orientação profissional nem os sistemas da Receita Federal. Não promete evitar malha fina ou maximizar restituição. A avaliação medirá o comportamento do protótipo em casos de referência fictícios.
+Consulte [o plano detalhado](docs/plano-de-construcao.md) e as instruções de colaboração em [AGENTS.md](AGENTS.md).

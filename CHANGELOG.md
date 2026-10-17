@@ -1,9 +1,8 @@
-# Histórico de versões
-
-As mudanças mais recentes aparecem primeiro. Uma versão só recebe tag quando seu critério de aceite está concluído.
+# Histórico de mudanças
 
 ## Não lançado
 
-- Reinício do planejamento após formatação do computador.
-- Documentados o objetivo, os papéis da arquitetura, as etapas, os critérios de aceite e a rotina de aprendizagem.
-- Nenhum código do sistema foi implementado neste recomeço.
+- Reinício organizado do repositório após a formatação do computador.
+- Registrada a sequência de versões cumulativas para o TCC.
+- Removidos do estado atual os protótipos anteriores; o histórico Git continua preservado.
+- Nenhum Flow do sistema faz parte desta base ainda.

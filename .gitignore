@@ -1,14 +1,12 @@
-# Ambientes Python
+# Ambientes e configurações locais
 .venv/
 venv/
 env/
-
-# Segredos e configurações locais
 .env
 .env.*
 !.env.example
 
-# Python e testes
+# Python
 __pycache__/
 *.py[cod]
 .pytest_cache/
@@ -17,9 +15,12 @@ __pycache__/
 .coverage
 htmlcov/
 
-# Ferramentas e saídas locais
-.streamlit/
+# Dados e resultados gerados localmente
+data/local/
+output/
+*.sqlite3
+*.log
+
+# Editores
 .idea/
 .vscode/
-*.log
-*.sqlite3

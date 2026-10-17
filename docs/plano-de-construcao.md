@@ -1,73 +1,102 @@
-# Plano de construção do projeto
+# Plano de construção do TCC
 
-## Propósito
+## Objetivo do protótipo
 
-Construir um protótipo acadêmico, em etapas curtas, que auxilie a organizar informações e revisar casos de IRPF com base em fontes oficiais. O foco da avaliação é a qualidade da assistência em cenários de teste; o projeto não poderá concluir que reduz a malha fina sem evidências apropriadas.
+Construir uma ferramenta experimental e complementar para organizar dúvidas e revisar cenários fictícios de IRPF. A avaliação observará se o sistema identifica pendências e inconsistências e se apresenta fundamentos rastreáveis. Não se concluirá que a ferramenta reduz malha fina ou aumenta restituição sem um estudo apropriado.
 
-O escopo tributário, o exercício fiscal e os casos atendidos serão definidos antes de integrar legislação ou fazer cálculos. Até essa definição, todos os dados usados serão fictícios.
+Antes de codificar regras tributárias, delimitar o exercício fiscal, os tipos de situação atendidos, os dados de entrada e os casos de referência. Usar apenas dados fictícios.
 
-## Papéis da arquitetura
+## Arquitetura e responsabilidades
 
-- **Flow:** mantém o estado de uma execução, valida formatos, escolhe caminhos, chama funções determinísticas e encaminha os dados.
-- **Agente 1 — interpretação da entrada:** transforma uma dúvida em dados organizados e aponta ambiguidades. O Flow pode pular este agente quando a entrada já vier estruturada.
-- **Agente 2 — fundamentação tributária:** consulta fontes selecionadas por RAG e explica quais regras podem se aplicar, sempre preservando a referência da fonte.
-- **Funções Python:** calculam valores e verificam condições expressas em regras implementadas. Não delegar aritmética ou checagens objetivas a um LLM.
-- **Agente 3 — revisão:** compara os dados, as fontes recuperadas e os resultados das funções; produz apontamentos explicados, sem inventar regras.
+- **Flow:** mantém estado de cada execução, valida formatos, escolhe caminhos, faz chamadas às etapas e conduz pedidos de esclarecimento.
+- **Agente 1 — interpretação da entrada:** organiza a dúvida e extrai informações fornecidas; identifica ambiguidades e perguntas pendentes. Pode ser ignorado quando a entrada já estiver estruturada.
+- **Agente 2 — fundamentação tributária:** consulta a base RAG e relaciona trechos de fontes oficiais ao caso, informando origem e limites.
+- **Funções Python:** conferem campos e formatos e executam cálculos definidos. Operações objetivas não ficam a cargo do LLM.
+- **Agente 3 — revisão:** compara dados, fontes recuperadas e cálculos; entrega achados, justificativas e pendências sem criar regras.
 
-## Versões e critérios de aceite
+## Etapas e critérios de aceite
 
-| Marco | Implementação | Critério de aceite | Registro |
-|---|---|---|---|
-| Planejamento | Delimitar público, casos, exercício fiscal, dados, fluxo e critérios de avaliação. Preparar o ambiente de desenvolvimento e entender Git básico. | Escopo aprovado para começar; repositório clonado e sem segredos; cada caso de uso tem entrada e resultado esperado. | Commit da documentação; sem tag de software. |
-| `v0.1.0` | Criar o Flow pela CLI oficial do CrewAI. Implementar entrada simples, estado, validação e saída no terminal. | Instalação e execução documentadas; exemplo fictício percorre todo o fluxo; estudante consegue explicar cada método. | README, CHANGELOG, commit e tag. |
-| `v0.2.0` | Configurar o provedor de LLM localmente e adicionar o Agente 1 para interpretar dúvidas e retornar campos estruturados e pendências. | Pelo menos três entradas fictícias produzem saída compatível com o formato definido; ambiguidade gera pergunta ou pendência explícita. | Atualizar exemplos e limitações; tag. |
-| `v0.3.0` | Selecionar fontes oficiais do escopo e criar recuperação RAG; integrar o Agente 2 ao Flow. | Consulta mostra trechos recuperados e referência; pergunta fora da base recebe indicação de insuficiência, sem regra inventada. | Registrar fontes, data/versão, procedimento de atualização e tag. |
-| `v0.4.0` | Criar funções Python para validações e cálculos dentro do escopo definido; aceitar uma entrada estruturada de análise prévia. | Casos conhecidos retornam resultados conferíveis; dados incompletos ou inválidos são sinalizados sem produzir conclusão enganosa. | Adicionar casos de teste fictícios, documentação e tag. |
-| `v0.5.0` | Integrar o Agente 3 para revisar a coerência e gerar um relatório de achados, evidências e pendências. | Cada achado aponta para dado, regra recuperada ou cálculo; o relatório separa evidência de recomendação. | Exemplo completo, limitações e tag. |
-| `v0.6.0` | Criar interface simples para consulta e análise prévia; apresentar perguntas e relatório de modo claro. | Demonstração ponta a ponta com dados fictícios; erros e ausência de fontes são visíveis ao usuário. | Instruções de execução e tag. |
-| `v0.7.0` | Avaliar casos de referência e corrigir problemas encontrados. Comparar saídas do sistema com respostas esperadas revisadas. | Critérios, casos, acertos, erros e limitações registrados de forma reproduzível. | Relatório de avaliação e tag. |
-| `v1.0.0` | Consolidar o protótipo demonstrável e a documentação técnica para o TCC. | Instalação limpa e demonstração reproduzíveis; documentação corresponde ao código e aos resultados. | Release/tag final e notas da versão. |
+### Planejamento — antes de `v0.1.0`
 
-O cronograma de semanas será definido após o planejamento e uma medição simples do tempo gasto em `v0.1.0`. As estimativas iniciais de esforço por etapa são hipóteses, não prazos garantidos.
+Definir um caso de uso inicial, quem o protótipo atende, que exercício fiscal será considerado, quais dados fictícios entram e quais resultados são esperados. Preparar Git, Python e CrewAI.
 
-## Caminho de aprendizagem por etapa
+**Aceite:** escopo inicial escrito; cópia local sincronizada com o GitHub; ambiente usa uma versão de Python compatível.
 
-Para cada versão, seguir este ciclo:
+### `v0.1.0` — Flow básico
 
-1. **Entender:** ler o critério de aceite e identificar os conceitos novos.
-2. **Desenhar:** registrar entrada, saída, arquivos afetados e caminho dos dados.
-3. **Programar:** escrever em pequenos trechos, executando após cada mudança.
-4. **Explicar:** descrever o que cada função, classe ou configuração faz.
-5. **Verificar:** testar o caso feliz, uma entrada inválida e um caso de limite relevante.
-6. **Versionar:** revisar diff e segredos, atualizar documentação, fazer commit e tag ao cumprir o aceite.
+Gerar a estrutura oficial de Flow pela CLI do CrewAI. Entender e executar a entrada, o estado, a validação e a apresentação no terminal. Não usar LLM nesta versão.
 
-O assistente deve primeiro orientar e revisar. Intervenção direta nos arquivos fica para quando o estudante solicitar.
+**Aceite:** execução completa com um exemplo fictício, instruções de instalação e execução, e explicação do papel de cada arquivo principal.
 
-## Regras para versões independentes
+### `v0.2.0` — Interpretação da dúvida
 
-Cada versão será cumulativa e executável sozinha a partir de um clone limpo. Não manter cópias completas do programa em pastas separadas. Uma tag Git identifica exatamente o código de uma versão anterior e permite recuperá-lo.
+Adicionar um Agente 1 com tarefa específica e saída estruturada. Configurar a LLM localmente, mantendo segredos fora do repositório.
 
-Uma versão só é considerada concluída quando houver:
+**Aceite:** exemplos fictícios mostram interpretação consistente, campos extraídos e perguntas quando há ambiguidade.
 
-- comandos de instalação e execução testados ou uma limitação registrada;
-- exemplo de demonstração com entrada fictícia;
-- critério de aceite verificado;
-- README e CHANGELOG atualizados;
-- commit identificável e tag da versão.
+### `v0.3.0` — Fundamentação por RAG
 
-## Fluxo de GitHub
+Selecionar fontes oficiais para o escopo; registrar órgão, título, exercício/versão e data de obtenção. Criar recuperação de trechos e integrar o Agente 2.
 
-- `main` recebe versões concluídas e documentação revisada.
-- Para construir uma funcionalidade, abrir uma branch como `feat/agente-interpretacao`.
-- Fazer commits pequenos enquanto se trabalha.
-- Integrar a branch em `main` quando a versão passar pelos critérios de aceite.
-- Criar uma tag `vX.Y.Z` no commit da versão pronta.
-- Para retomar em outro computador, clonar o repositório e selecionar a tag ou branch desejada.
+**Aceite:** respostas apontam para os trechos e fontes recuperados; consultas sem evidência suficiente são sinalizadas.
 
-## Segurança e limites
+### `v0.4.0` — Validação e cálculos
 
-- Usar apenas exemplos inventados; não subir declaração real ou documento fiscal.
-- Guardar chaves no arquivo local `.env`, ignorado pelo Git, e fornecer apenas nomes de variáveis em `.env.example`.
-- Não usar a LLM para cálculo financeiro ou para substituir regras explícitas de validação.
-- Preservar fontes e trechos usados; informar quando não houver base suficiente.
-- Tratar o resultado como apoio experimental, sem promessa de evitar malha fina ou elevar restituição.
+Definir um formato estruturado para análise prévia. Implementar em Python as verificações e cálculos que cabem no escopo acordado.
+
+**Aceite:** casos de referência têm resultados conferíveis; dados ausentes ou inválidos são identificados antes de gerar conclusão.
+
+### `v0.5.0` — Revisão consolidada
+
+Integrar o Agente 3 para comparar dados, fundamentos recuperados e resultados determinísticos. Padronizar um relatório com achados, evidências, recomendações e pendências.
+
+**Aceite:** todo achado aponta para dado, fonte ou cálculo pertinente e o sistema distingue evidência de sugestão.
+
+### `v0.6.0` — Interface de demonstração
+
+Criar uma interface simples para consultar uma dúvida e executar uma análise prévia com dados fictícios. Mostrar perguntas, referências, falhas e relatório.
+
+**Aceite:** demonstração de ponta a ponta reproduzível sem editar o código para cada caso.
+
+### `v0.7.0` — Avaliação
+
+Executar casos de referência com resultados esperados definidos previamente. Comparar saídas e documentar erros, acertos e limitações.
+
+**Aceite:** procedimento e resultados reproduzíveis, com critérios explícitos; correções relevantes incluídas.
+
+### `v1.0.0` — Consolidação
+
+Revisar instalação limpa, documentação, interface e exemplos. Corrigir divergências entre TCC escrito e protótipo.
+
+**Aceite:** versão demonstrável e documentação técnica coerente, com limitações claramente descritas.
+
+## Organização prevista
+
+A estrutura final aproveitará a gerada pela CLI oficial do CrewAI e manterá documentação separada:
+
+```text
+.
+├── AGENTS.md
+├── CHANGELOG.md
+├── README.md
+├── docs/
+│   └── plano-de-construcao.md
+├── knowledge/                 # fontes selecionadas e metadados
+├── src/                       # Flow e código Python do sistema
+├── tests/                     # testes de lógica e casos fictícios
+├── .env.example               # nomes de variáveis, sem segredos
+├── .gitignore
+└── pyproject.toml              # dependências e comandos CrewAI
+```
+
+Não criar uma pasta completa por versão. Cada tag aponta para o estado cumulativo do código naquele marco.
+
+## Rotina de aprendizagem e versão
+
+Para cada marco: ler o critério de aceite; entender entradas, saídas e fluxo; implementar uma parte pequena; executar e interpretar o resultado; testar um caso esperado e um caso inválido; revisar as mudanças e segredos; atualizar documentação; então fazer commit e tag. O assistente explica e revisa, e só edita arquivos locais quando solicitado.
+
+Use `main` para estados estáveis e uma branch de funcionalidade durante trabalho maior. Commits podem registrar o progresso, mas uma tag de versão só deve ser criada depois que o aceite estiver verificado.
+
+## Ambiente atual
+
+Em 17/10/2026, no computador de desenvolvimento: Git 2.55.0, uv 0.13.1, Python 3.12.15 gerenciado pelo uv e CLI CrewAI 1.15.28. O Python 3.14.8 também permanece instalado, mas não atende ao intervalo exigido pelo CrewAI (Python >=3.10 e <3.14). O ambiente virtual do projeto será criado quando a estrutura CrewAI estiver na pasta do repositório.
